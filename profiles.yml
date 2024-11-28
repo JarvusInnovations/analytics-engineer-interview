@@ -1,0 +1,7 @@
+analytics_engineer_interview:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: data/analytics.db
+      schema: main
