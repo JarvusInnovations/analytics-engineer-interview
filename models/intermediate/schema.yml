@@ -1,0 +1,44 @@
+version: 2
+
+models:
+  - name: int_shelter_locations
+    description: >
+      Geographical clustering of bus shelters based on coordinates.
+      Groups nearby shelters to identify areas with high shelter density.
+    columns:
+      - name: lat_group
+        description: Rounded latitude for grouping nearby shelters
+        data_tests:
+          - not_null
+      - name: long_group
+        description: Rounded longitude for grouping nearby shelters
+        data_tests:
+          - not_null
+      - name: shelters_in_area
+        description: Count of shelters in this geographic cluster
+        data_tests:
+          - not_null
+          - positive_value:
+              min_value: 1
+      - name: shelter_ids
+        description: Array of shelter IDs in this cluster
+      - name: location_names
+        description: Array of location names in this cluster
+      - name: stop_ids
+        description: Array of stop IDs in this cluster
+      - name: min_lat
+        description: Minimum latitude in the cluster
+      - name: max_lat
+        description: Maximum latitude in the cluster
+      - name: min_long
+        description: Minimum longitude in the cluster
+      - name: max_long
+        description: Maximum longitude in the cluster
+      - name: cluster_spread
+        description: >
+          Euclidean distance between the furthest points in the cluster,
+          calculated as sqrt((max_lat - min_lat)^2 + (max_long - min_long)^2)
+        data_tests:
+          - not_null
+          - positive_value:
+              min_value: 0
