@@ -1,0 +1,58 @@
+version: 2
+
+sources:
+  - name: raw
+    description: Raw tables loaded by Python ingestion scripts
+    schema: main
+    tables:
+      - name: raw_bus_shelters
+        description: Raw bus shelter locations data from Philadelphia's open data portal
+        columns:
+          - name: objectid
+            description: Unique identifier for each shelter
+          - name: site
+            description: Location name/description
+          - name: siteid
+            description: Site identifier
+          - name: stopid
+            description: Stop identifier
+          - name: lat
+            description: Latitude coordinate
+          - name: long_
+            description: Longitude coordinate
+          - name: productgroup
+            description: Product group classification
+          - name: x
+            description: X coordinate
+          - name: y
+            description: Y coordinate
+
+models:
+  - name: stg_bus_shelters
+    description: Cleaned and renamed bus shelter locations
+    columns:
+      - name: shelter_id
+        description: Unique identifier for each shelter
+        data_tests:
+          - unique
+          - not_null
+      - name: location_name
+        description: Location name/description
+      - name: site_id
+        description: Site identifier
+      - name: stop_id
+        description: Stop identifier
+      - name: latitude
+        description: Latitude coordinate
+        data_tests:
+          - not_null
+      - name: longitude
+        description: Longitude coordinate
+        data_tests:
+          - not_null
+      - name: product_group
+        description: Product group classification
+      - name: x_coordinate
+        description: X coordinate
+      - name: y_coordinate
+        description: Y coordinate
