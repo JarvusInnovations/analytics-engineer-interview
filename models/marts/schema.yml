@@ -1,0 +1,71 @@
+version: 2
+
+models:
+  - name: mart_shelter_distribution
+    description: >
+      High-level analysis of bus shelter distribution across the network.
+      Provides insights into shelter clustering patterns and network coverage.
+    columns:
+      - name: total_clusters
+        description: Total number of distinct geographic clusters
+        data_tests:
+          - not_null
+          - positive_value:
+              min_value: 1
+      - name: total_shelters
+        description: Total number of shelters across all clusters
+        data_tests:
+          - not_null
+          - positive_value:
+              min_value: 1
+      - name: avg_shelters_per_cluster
+        description: Average number of shelters per geographic cluster
+        data_tests:
+          - not_null
+          - positive_value:
+              min_value: 1
+      - name: max_shelters_in_cluster
+        description: Maximum number of shelters found in any single cluster
+        data_tests:
+          - not_null
+          - positive_value:
+              min_value: 1
+      - name: avg_cluster_spread
+        description: >
+          Average Euclidean distance between the furthest points across all clusters,
+          indicating typical cluster size
+        data_tests:
+          - not_null
+          - positive_value:
+              min_value: 0
+      - name: network_min_lat
+        description: Southernmost latitude in the network
+        data_tests:
+          - not_null
+      - name: network_max_lat
+        description: Northernmost latitude in the network
+        data_tests:
+          - not_null
+      - name: network_min_long
+        description: Westernmost longitude in the network
+        data_tests:
+          - not_null
+      - name: network_max_long
+        description: Easternmost longitude in the network
+        data_tests:
+          - not_null
+      - name: dense_cluster_count
+        description: Number of clusters with above-average shelter count
+        data_tests:
+          - not_null
+          - positive_value:
+              min_value: 0
+      - name: shelters_in_dense_areas
+        description: Total number of shelters in dense clusters
+        data_tests:
+          - not_null
+          - positive_value:
+              min_value: 0
+          - less_than_or_equal:
+              compare_model: ref('mart_shelter_distribution')
+              compare_column: total_shelters
