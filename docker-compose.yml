@@ -1,0 +1,36 @@
+services:
+  analytics:
+    build: .
+    volumes:
+      - .:/app
+      - .dbt:/root/.dbt
+    environment:
+      - DBT_PROFILES_DIR=/app
+    command: bash -c "python scripts/ingest_data.py && dbt deps && dbt build"
+
+  # Development service for interactive use
+  dev:
+    build: .
+    volumes:
+      - .:/app
+      - .dbt:/root/.dbt
+    environment:
+      - DBT_PROFILES_DIR=/app
+    command: bash
+
+  # Service for running just the data ingestion
+  ingest:
+    build: .
+    volumes:
+      - .:/app
+    command: python scripts/ingest_data.py
+
+  # Service for running just dbt commands
+  dbt:
+    build: .
+    volumes:
+      - .:/app
+      - .dbt:/root/.dbt
+    environment:
+      - DBT_PROFILES_DIR=/app
+    command: dbt build
