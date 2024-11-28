@@ -1,0 +1,33 @@
+name: Analytics Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Build and run pipeline
+      run: |
+        docker compose build
+        docker compose run analytics
+
+    - name: Upload DuckDB database
+      uses: actions/upload-artifact@v3
+      with:
+        name: analytics-db
+        path: data/analytics.db
+        if-no-files-found: error
+
+    - name: Upload dbt artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: dbt-artifacts
+        path: target/
+        if-no-files-found: error
