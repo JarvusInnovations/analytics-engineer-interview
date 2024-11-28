@@ -69,3 +69,21 @@ models:
           - less_than_or_equal:
               compare_model: ref('mart_shelter_distribution')
               compare_column: total_shelters
+
+  - name: mart_routes_by_mode
+    description: Summary of total routes per transit mode and agency
+    columns:
+      - name: agency_name
+        description: Name of the transit agency
+        tests:
+          - not_null
+      - name: mode_name
+        description: Type of transit mode (Bus, Rail, etc.)
+        tests:
+          - not_null
+      - name: route_count
+        description: Total number of routes for this mode and agency
+        tests:
+          - not_null
+          - positive_value:
+              min_value: 1

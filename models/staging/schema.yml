@@ -56,3 +56,52 @@ models:
         description: X coordinate
       - name: y_coordinate
         description: Y coordinate
+
+  - name: stg_gtfs_routes
+    description: Staging model for SEPTA routes from GTFS feed
+    columns:
+      - name: route_id
+        description: Unique identifier for each route
+        tests:
+          - unique
+          - not_null
+      - name: agency_id
+        description: Reference to the agency operating this route
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_gtfs_agency')
+              field: agency_id
+      - name: route_type
+        description: Numeric code representing the route type/mode
+        tests:
+          - not_null
+      - name: mode_name
+        description: Human-readable name for the route type/mode
+        tests:
+          - not_null
+      - name: data_source
+        description: Source of the route data (bus or rail)
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['bus', 'rail']
+
+  - name: stg_gtfs_agency
+    description: Staging model for SEPTA agencies from GTFS feed
+    columns:
+      - name: agency_id
+        description: Unique identifier for each agency
+        tests:
+          - unique
+          - not_null
+      - name: agency_name
+        description: Name of the transit agency
+        tests:
+          - not_null
+      - name: data_source
+        description: Source of the agency data (bus or rail)
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['bus', 'rail']
